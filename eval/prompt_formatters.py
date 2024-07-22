@@ -3,6 +3,7 @@
 from random import shuffle
 from manifest import Manifest
 from schema import Table
+import re
 
 
 class RajkumarFormatter:
@@ -64,8 +65,18 @@ class RajkumarFormatter:
     @classmethod
     def format_model_output(cls, output_sql: str, prompt: str) -> str:
         """Format model output."""
-        output_sql = output_sql.replace("```sql\n", "").replace("```\n", "").replace("```", "")
-        return output_sql
+        if '```' in output_sql:
+            pattern = r'```(?:sql)?\s*([\s\S]*?)```'
+            match = re.search(pattern, output_sql)
+
+            if match:
+                # Extracting the content of the first code cell
+                first_code_cell_content = match.group(1)
+                return first_code_cell_content.strip()
+            else:
+                return ""
+        else:
+            return output_sql
 
     @classmethod
     def format_gold_output(cls, output_sql: str) -> str:
