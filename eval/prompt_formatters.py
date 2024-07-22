@@ -66,17 +66,20 @@ class RajkumarFormatter:
     def format_model_output(cls, output_sql: str, prompt: str) -> str:
         """Format model output."""
         if '```' in output_sql:
-            pattern = r'```(?:sql)?\s*([\s\S]*?)```'
+            pattern = r'```(?:sql)?\s*([\s\S]*?)(?:```|$)'
             match = re.search(pattern, output_sql)
 
             if match:
                 # Extracting the content of the first code cell
                 first_code_cell_content = match.group(1)
-                return first_code_cell_content.strip()
+                output_sql = first_code_cell_content.strip()
             else:
-                return ""
-        else:
-            return output_sql
+                output_sql = ""
+        
+        if not output_sql.endswith(";"):
+            output_sql += ";"
+        
+        return output_sql
 
     @classmethod
     def format_gold_output(cls, output_sql: str) -> str:
