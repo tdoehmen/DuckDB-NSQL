@@ -213,7 +213,7 @@ def predict(
     console.print(f"Running with {manifest_params} manifest.")
     model_name = manifest_params.get("engine", manifest_params["model_name"])
 
-    if manifest_client in {"openai", "openrouter"}:
+    if manifest_client in {"openai", "openaichat", "openrouter", "azureendpoint"}:
         tokenizer = AutoTokenizer.from_pretrained("gpt2", trust_remote_code=True)
     else:
         tokenizer = AutoTokenizer.from_pretrained(model_name, trust_remote_code=True)
@@ -230,11 +230,11 @@ def predict(
         run_name = f"{run_name}_"
     suffix = f"{run_name}{full_dataset_path.stem}_{date_today}.json"  # noqa: E501
     prefix = f"{prompt_format}_{num_retrieved_docs}docs"
-    if manifest_client in {"openai", "openaichat", "openaiazure"}:
+    if manifest_client in {"openai", "openaiazure"}:
         middleix = manifest_engine
     elif manifest_client in {"huggingface", "ray"}:
         middleix = Path(manifest_params.get("model_path", "")).name.replace("/", "-")
-    elif manifest_client in {"toma", "openrouter"}:
+    elif manifest_client in {"toma", "openrouter", "openaichat", "azureendpoint"}:
         middleix = manifest_engine.split("/")[-1]
     else:
         raise ValueError(f"Unknown manifest client {manifest_client}")

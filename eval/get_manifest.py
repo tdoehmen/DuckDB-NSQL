@@ -9,7 +9,7 @@ def get_manifest(
     manifest_engine: str,
 ) -> Manifest:
     """Get manifest engine."""
-    if manifest_client in {"openai", "openaichat", "openai_mock", "openrouter"}:
+    if manifest_client in {"openai", "openaichat", "openai_mock", "openrouter", "azureendpoint"}:
         manifest = Manifest(
             client_name=manifest_client,
             engine=manifest_engine,

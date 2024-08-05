@@ -6,12 +6,30 @@ from prompt_formatters import (
     DuckDBInstNoShorthandFormatter,
     RajkumarFormatter,
     DuckDBChat,
+    DuckDBInstFormatterLlamaShort,
+    DuckDBInstFormatterGraniteShort,
+    DuckDBInstFormatterLlama,
+    DuckDBInstFormatterLlamaBasic,
+    DuckDBInstFormatterGranite,
+    DuckDBInstFormatterPhi,
+    DuckDBInstFormatterGPTmini,
+    DuckDBInstFormatterPhiAzure,
+    DuckDBInstFormatterLlamaSyntax,
 )
 
 PROMPT_FORMATTERS = {
     "rajkumar": RajkumarFormatter,
     "duckdb": DuckDBFormatter,
     "duckdbinst": DuckDBInstFormatter,
+    "duckdbinstllamashort": DuckDBInstFormatterLlamaShort,
+    "duckdbinstgraniteshort": DuckDBInstFormatterGraniteShort,
+    "duckdbinstllama": DuckDBInstFormatterLlama,
+    "duckdbinstgranite": DuckDBInstFormatterGranite,
     "duckdbinstnoshort": DuckDBInstNoShorthandFormatter,
     "duckdbchat": DuckDBChat,
+    "duckdbinstphi": DuckDBInstFormatterPhi,
+    "duckdbinstgptmini": DuckDBInstFormatterPhi,
+    "duckdbinstphiazure": DuckDBInstFormatterPhiAzure,
+    "duckdbinstllamabasic": DuckDBInstFormatterLlamaBasic,
+    "duckdbinstllamasyntax": DuckDBInstFormatterLlamaSyntax
 }
