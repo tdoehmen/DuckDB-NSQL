@@ -2,6 +2,7 @@
 
 from prompt_formatters import (
     DuckDBFormatter,
+    MotherDuckFormatter,
     DuckDBInstFormatter,
     DuckDBInstNoShorthandFormatter,
     RajkumarFormatter,
@@ -20,6 +21,7 @@ from prompt_formatters import (
 PROMPT_FORMATTERS = {
     "rajkumar": RajkumarFormatter,
     "duckdb": DuckDBFormatter,
+    "motherduck": MotherDuckFormatter,
     "duckdbinst": DuckDBInstFormatter,
     "duckdbinstllamashort": DuckDBInstFormatterLlamaShort,
     "duckdbinstgraniteshort": DuckDBInstFormatterGraniteShort,

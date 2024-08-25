@@ -4,11 +4,12 @@ import json
 import re
 import time
 from typing import cast
+import duckdb
 
 import structlog
 from manifest import Manifest
 from manifest.response import Response, Usage
-from prompt_formatters import RajkumarFormatter
+from prompt_formatters import RajkumarFormatter, MotherDuckFormatter
 from schema import DEFAULT_TABLE_NAME, TextToSQLModelResponse, TextToSQLParams
 from tqdm.auto import tqdm
 
@@ -44,6 +45,30 @@ def instruction_to_sql(
         num_beams=num_beams,
     )[0]
 
+def run_motherduck_prompt_sql(params: list[TextToSQLParams]) -> list[TextToSQLModelResponse]:
+    results = []
+    for param in params:
+        con = duckdb.connect('md:')
+        try:
+            sql_query = con.execute("CALL prompt_sql(?);", [param.instruction]).fetchall()[0][0]
+        except Exception as e:
+            print(e)
+            sql_query = "SELECT * FROM hn.hacker_news LIMIT 1";
+        usage = Usage(
+                completion_tokens = 0,
+                prompt_tokens = 0,
+                total_tokens = 0
+        )
+        model_response = TextToSQLModelResponse(
+            output=sql_query,
+            raw_output=sql_query,
+            final_prompt=param.instruction,
+            usage=usage,
+        )
+        results.append(model_response)
+    return results
+
+
 
 def instruction_to_sql_list(
     params: list[TextToSQLParams],
@@ -61,6 +86,9 @@ def instruction_to_sql_list(
 
     Connector is used for default retry handlers only.
     """
+    if type(prompt_formatter) is MotherDuckFormatter:
+        return run_motherduck_prompt_sql(params)
+
     if prompt_formatter is None:
         raise ValueError("Prompt formatter is required.")
 
