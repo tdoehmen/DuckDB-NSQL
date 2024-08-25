@@ -135,10 +135,10 @@ def cli() -> None:
 # Docs options
 @click.option(
     "--markdown-docs-path",
-    type=click.Path(
-        exists=True, file_okay=True, dir_okay=True, readable=True, path_type=Path
-    ),
-    default="eval/docs/duckdb-web/docs/archive/0.9/sql",
+    #type=click.Path(
+    #    exists=True, file_okay=True, dir_okay=True, readable=True, path_type=Path
+    #),
+    default="eval/docs/duckdb-web/docs/archive/0.9.2/sql",
 )
 @click.option("--num-retrieved-docs", type=int, default=0)
 # Manifest options
