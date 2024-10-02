@@ -157,13 +157,21 @@ def instruction_to_sql_list(
     ret: list[TextToSQLModelResponse] = []
     if len(params) == 1:
         prompt = prompts[0]
-        model_response = _run_manifest(
-            prompt,
-            manifest_params,
-            prompt_formatter,
-            manifest,
-            stop_sequences=stop_sequences,
-        )
+        success = False
+        retries = 0
+        while not success and retries < 5:
+            try:
+                model_response = _run_manifest(
+                    prompt,
+                    manifest_params,
+                    prompt_formatter,
+                    manifest,
+                    stop_sequences=stop_sequences,
+                )
+                success = True
+            except:
+                retries +=1
+
         usage = model_response.usage
         model_response.usage = usage
         ret.append(model_response)
